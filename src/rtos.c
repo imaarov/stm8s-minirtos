@@ -79,8 +79,7 @@ void os_create_task(os_task_fn fn, uint8_t *stack, uint8_t stack_size)
 }
 
 /*
-    this is IDLE status, conceptually, we should never get to this point,
-    just like we should never get out of the super loop from a non rtos, bare metal project
+    this is IDLE status, we get to this after create all the tasks, thats how it should be
  */
 void os_start(void)
 {
