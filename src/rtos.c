@@ -39,8 +39,6 @@ void os_init(void)
     TIM4_ARR  = 124;
     TIM4_EGR  = TIM4_EGR_UG;
     TIM4_SR   = (uint8_t)~TIM4_SR_UIF;
-    TIM4_IER  = TIM4_IER_UIE;
-    TIM4_CR1  = TIM4_CR1_CEN;
 }
 
 void os_create_task(os_task_fn fn, uint8_t *stack, uint8_t stack_size)
@@ -83,11 +81,15 @@ void os_create_task(os_task_fn fn, uint8_t *stack, uint8_t stack_size)
  */
 void os_start(void)
 {
+    TIM4_SR   = (uint8_t)~TIM4_SR_UIF;
+    TIM4_IER  = TIM4_IER_UIE;
+    TIM4_CR1  = TIM4_CR1_CEN;
+
     __asm__("rim");
 
     while (1)
     {
-        __asm__("wfi"); // wait for interrupt
+        __asm__("wfi"); // wait for interrupts and scheduler 
     }
 }
 
